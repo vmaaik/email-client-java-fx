@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
+
+<AnchorPane prefHeight="417.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gebarowski.MainController">
+   <children>
+      <Button fx:id="button1" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#button1Action" text="Button" />
+      <Button layoutX="80.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="138.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
+      <TreeView layoutX="14.0" layoutY="46.0" prefHeight="362.0" prefWidth="200.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="60.0" />
+      <TableView  fx:id="emailTableView" layoutX="214.0" layoutY="46.0" prefHeight="189.0" prefWidth="424.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
+         <columns>
+            <TableColumn fx:id="subjectCol" prefWidth="171.0" text="Subject" />
+            <TableColumn fx:id="senderCol" prefWidth="117.0" text="Sender" />
+            <TableColumn fx:id="sizeCol" prefWidth="135.0" text="Size" />
+         </columns></TableView>
+      <WebView fx:id="messageRenderer" layoutX="214.0" layoutY="235.0" prefHeight="181.0" prefWidth="424.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="225.0" />
+   </children>
+</AnchorPane>
