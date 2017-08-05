@@ -35,7 +35,7 @@ public class SampleData {
 
 
     // We dont know how many foders are in app
-    private Map<String, ObservableList<EmailMessageBean>> emailFolders = new HashMap<String, ObservableList<EmailMessageBean>>();
+    public Map<String, ObservableList<EmailMessageBean>> emailFolders = new HashMap<String, ObservableList<EmailMessageBean>>();
 
     public SampleData(){
 

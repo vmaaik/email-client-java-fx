@@ -21,8 +21,8 @@ public class EmailMessageBean {
 
     public EmailMessageBean(String Subject, String Sender, int size, String Content) {
 
-        this.sender = new SimpleStringProperty(Subject);
-        this.subject = new SimpleStringProperty(Sender);
+        this.sender = new SimpleStringProperty(Sender);
+        this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
         this.content = Content;
 

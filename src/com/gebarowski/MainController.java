@@ -1,6 +1,8 @@
 package com.gebarowski;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -9,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
@@ -36,11 +39,13 @@ public class MainController implements Initializable {
 
     SampleData data = new SampleData();
     MenuItem showDetails = new MenuItem("Show details");
+    private Singleton singleton;
 
 
     @Override
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
+        singleton = Singleton.getInstance();
 
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
@@ -90,12 +95,24 @@ public class MainController implements Initializable {
             if (email != null) {
 
                 messageRenderer.getEngine().loadContent(email.getContent());
+                singleton.setMessage(email);
             }
 
         });
 
         showDetails.setOnAction(e->{
+            Stage stage = new Stage();
+            Pane  pane = null;
+            try {
+                pane = (FXMLLoader.load(getClass().getResource("EmailContextMenuLayout.fxml")));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
 
+
+            Scene scene = new Scene(pane);
+            stage.setScene(scene);
+            stage.show();
         });
 
 
