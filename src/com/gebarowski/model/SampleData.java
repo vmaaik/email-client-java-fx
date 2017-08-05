@@ -1,8 +1,7 @@
-package com.gebarowski;
+package com.gebarowski.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.HashMap;
 import java.util.Map;
 

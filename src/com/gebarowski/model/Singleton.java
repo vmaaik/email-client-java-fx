@@ -1,4 +1,4 @@
-package com.gebarowski;
+package com.gebarowski.model;
 
 public class Singleton {
 

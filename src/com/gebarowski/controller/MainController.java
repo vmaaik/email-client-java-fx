@@ -1,17 +1,16 @@
-package com.gebarowski;
+package com.gebarowski.controller;
 
-import javafx.collections.FXCollections;
+import com.gebarowski.model.EmailMessageBean;
+import com.gebarowski.model.SampleData;
+import com.gebarowski.model.Singleton;
+import com.gebarowski.view.ViewFactory;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
@@ -25,6 +24,7 @@ public class MainController implements Initializable {
     public TableView<EmailMessageBean> emailTableView;
     @FXML
     public TreeView<String> emailFoldersTreeView;
+    @FXML
     public TreeItem<String> root = new TreeItem<String>();
     @FXML
     private Button button1;
@@ -45,6 +45,8 @@ public class MainController implements Initializable {
     @Override
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
+        ViewFactory viewFactory = new ViewFactory();
+
         singleton = Singleton.getInstance();
 
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
@@ -100,25 +102,15 @@ public class MainController implements Initializable {
 
         });
 
-        showDetails.setOnAction(e->{
+        showDetails.setOnAction(e -> {
             Stage stage = new Stage();
-            Pane  pane = null;
-            try {
-                pane = (FXMLLoader.load(getClass().getResource("EmailContextMenuLayout.fxml")));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-
-
-            Scene scene = new Scene(pane);
-            stage.setScene(scene);
+            stage.setScene(viewFactory.getEMailContextMenuScene());
             stage.show();
         });
 
 
         root.setValue("test@gmail.com");
         emailTableView.setContextMenu(new ContextMenu(showDetails));
-
         root.getChildren().addAll(inbox, sent, spam, trash);
         root.setExpanded(true);
 

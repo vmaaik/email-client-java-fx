@@ -1,7 +1,6 @@
-package com.gebarowski;
+package com.gebarowski.model;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,5 +1,6 @@
-package com.gebarowski;
+package com.gebarowski.controller;
 
+import com.gebarowski.model.Singleton;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -8,7 +9,7 @@ import javafx.scene.web.WebView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EmailContextMenuController implements Initializable{
+public class EmailContextMenuController implements Initializable {
 
     @FXML
     public WebView menuMessageWebView;
@@ -22,12 +23,9 @@ public class EmailContextMenuController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         singleton = Singleton.getInstance();
-       subjectLabel.setText("Subject: " + singleton.getMessage().getSubject());
-       senderLabel.setText("Sender: "+ singleton.getMessage().getSender());
-       menuMessageWebView.getEngine().loadContent(singleton.getMessage().getContent());
-
-
-
+        subjectLabel.setText("Subject: " + singleton.getMessage().getSubject());
+        senderLabel.setText("Sender: " + singleton.getMessage().getSender());
+        menuMessageWebView.getEngine().loadContent(singleton.getMessage().getContent());
 
 
     }
