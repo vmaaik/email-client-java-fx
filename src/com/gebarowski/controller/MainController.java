@@ -2,7 +2,6 @@ package com.gebarowski.controller;
 
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.SampleData;
-import com.gebarowski.model.Singleton;
 import com.gebarowski.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,10 +14,7 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
-
-    //TODO Set icon PART-4
-    //TODO Add log library PART-4
+public class MainController extends AbstractController implements Initializable {
 
     @FXML
     public TableView<EmailMessageBean> emailTableView;
@@ -39,15 +35,19 @@ public class MainController implements Initializable {
 
     SampleData data = new SampleData();
     MenuItem showDetails = new MenuItem("Show details");
-    private Singleton singleton;
+    TreeItem<String> inbox = new TreeItem<String>("Inbox");
+    TreeItem<String> sent = new TreeItem<String>("Sent");
+    TreeItem<String> spam = new TreeItem<String>("Spam");
+    TreeItem<String> trash = new TreeItem<String>("Trash");
+    ViewFactory viewFactory = ViewFactory.defaultViewFactory;
 
+    public MainController(ModelAccess modelAccess) {
+        super(modelAccess);
+    }
 
     @Override
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
-        ViewFactory viewFactory = new ViewFactory();
-
-        singleton = Singleton.getInstance();
 
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
@@ -67,12 +67,6 @@ public class MainController implements Initializable {
                 return int1.compareTo(int2);
             }
         });
-
-        TreeItem<String> inbox = new TreeItem<String>("Inbox");
-        TreeItem<String> sent = new TreeItem<String>("Sent");
-        TreeItem<String> spam = new TreeItem<String>("Spam");
-        TreeItem<String> trash = new TreeItem<String>("Trash");
-        emailFoldersTreeView.setRoot(root);
 
 
         emailFoldersTreeView.setOnMouseClicked(e ->
@@ -95,9 +89,9 @@ public class MainController implements Initializable {
             EmailMessageBean email = emailTableView.getSelectionModel().getSelectedItem();
 
             if (email != null) {
-
+                getModelAccess().setSelectedMessage(email);
                 messageRenderer.getEngine().loadContent(email.getContent());
-                singleton.setMessage(email);
+
             }
 
         });
@@ -108,7 +102,7 @@ public class MainController implements Initializable {
             stage.show();
         });
 
-
+        emailFoldersTreeView.setRoot(root);
         root.setValue("test@gmail.com");
         emailTableView.setContextMenu(new ContextMenu(showDetails));
         root.getChildren().addAll(inbox, sent, spam, trash);
@@ -118,3 +112,8 @@ public class MainController implements Initializable {
 
 
 }
+
+
+//TODO Set icon PART-4
+//TODO Add log library PART-4
+//TODO Try and catch

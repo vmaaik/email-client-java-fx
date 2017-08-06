@@ -15,7 +15,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        ViewFactory viewFactory = new ViewFactory();
+        ViewFactory viewFactory = ViewFactory.defaultViewFactory;
         Scene scene = viewFactory.getMainScene();
         primaryStage.setScene(scene);
         primaryStage.show();
