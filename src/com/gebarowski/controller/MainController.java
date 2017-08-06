@@ -24,16 +24,7 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     public TreeItem<String> root = new TreeItem<String>();
     @FXML
-    private Button button1;
-    @FXML
-    private TableColumn<EmailMessageBean, String> subjectCol;
-    @FXML
-    private TableColumn<EmailMessageBean, String> senderCol;
-    @FXML
-    private TableColumn<EmailMessageBean, String> sizeCol;
-    @FXML
     WebView messageRenderer;
-
     SampleData data = new SampleData();
     MenuItem showDetails = new MenuItem("Show details");
     TreeItem<String> inbox = new TreeItem<String>("Inbox");
@@ -41,9 +32,29 @@ public class MainController extends AbstractController implements Initializable 
     TreeItem<String> spam = new TreeItem<String>("Spam");
     TreeItem<String> trash = new TreeItem<String>("Trash");
     ViewFactory viewFactory = ViewFactory.defaultViewFactory;
+    @FXML
+    private Button button1;
+    @FXML
+    private Button button2;
+    @FXML
+    private TableColumn<EmailMessageBean, String> subjectCol;
+    @FXML
+    private TableColumn<EmailMessageBean, String> senderCol;
+    @FXML
+    private TableColumn<EmailMessageBean, String> sizeCol;
 
     public MainController(ModelAccess modelAccess) {
         super(modelAccess);
+    }
+
+    @FXML
+    public void changeReadAction() {
+        EmailMessageBean message = getModelAccess().getSelectedMessage();
+        if (message != null) {
+            boolean value = message.isRead();
+            message.setRead(!value);
+        }
+
     }
 
     @Override
@@ -103,16 +114,14 @@ public class MainController extends AbstractController implements Initializable 
             stage.setScene(viewFactory.getEMailContextMenuScene());
             stage.show();
         });
-
         emailFoldersTreeView.setRoot(root);
         root.setValue("test@gmail.com");
         emailTableView.setContextMenu(new ContextMenu(showDetails));
         root.getChildren().addAll(inbox, sent, spam, trash);
         root.setExpanded(true);
-
+        button2.setOnAction(e -> changeReadAction()
+        );
     }
-
-
 }
 
 
