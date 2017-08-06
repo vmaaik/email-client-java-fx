@@ -1,11 +1,13 @@
 package com.gebarowski.model;
 
+import com.gebarowski.model.table.AbstractTableItem;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmailMessageBean {
+public class EmailMessageBean extends AbstractTableItem {
 
     /**
      *
@@ -17,13 +19,16 @@ public class EmailMessageBean {
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
     private String content;
+    private SimpleBooleanProperty isRead;
 
-    public EmailMessageBean(String Subject, String Sender, int size, String Content) {
-
+    public EmailMessageBean(String Subject, String Sender, int size, String Content, boolean isRead) {
+        super(isRead);
         this.sender = new SimpleStringProperty(Sender);
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
         this.content = Content;
+
+
 
     }
 

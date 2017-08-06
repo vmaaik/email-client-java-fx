@@ -20,7 +20,7 @@ public class ViewFactory {
 
 
     private ModelAccess modelAccess = new ModelAccess();
-    private MainController mainController; // Lazy ins
+    private MainController mainController;
     private EmailContextMenuController emailContextMenuController;
     private final String DEFAULT_CSS = "style.css";
     private final String EMAIL_CONTEXT_MENU_FXML= "EmailContextMenuLayout.fxml";
@@ -33,7 +33,8 @@ public class ViewFactory {
 
 
     /**
-     * Both controllers have the same modelAccess object
+     * Both controllers have the same modelAcces
+     * s object
      *
      */
     public Scene getMainScene() throws OperationNotSupportedException {
@@ -70,7 +71,7 @@ public class ViewFactory {
            return null;
         }
         scene = new Scene(parent);
-        scene.getStylesheets().add(getClass().getResource("DEFAULT_CSS").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource(DEFAULT_CSS).toExternalForm());
         return scene;
     }
 

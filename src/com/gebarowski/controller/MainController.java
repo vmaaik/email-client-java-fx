@@ -2,6 +2,7 @@ package com.gebarowski.controller;
 
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.SampleData;
+import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,6 +50,7 @@ public class MainController extends AbstractController implements Initializable 
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
 
+        emailTableView.setRowFactory(e -> new BoldRowFactory<>());
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
         sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("size"));
