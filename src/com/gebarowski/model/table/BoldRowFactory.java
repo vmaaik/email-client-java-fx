@@ -3,6 +3,7 @@ package com.gebarowski.model.table;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 
 public class BoldRowFactory<T extends AbstractTableItem> extends TableRow<T> {
 
@@ -11,7 +12,15 @@ public class BoldRowFactory<T extends AbstractTableItem> extends TableRow<T> {
 
     public BoldRowFactory() {
         super();
-
+/**
+ *
+ * A function which produces a TableRow. The system is responsible for
+ * reusing TableRows. Return from this function a TableRow which
+ * might be usable for representing a single row in a TableView.
+ * The methods are overridden in order to create a custom {@link TableView#rowFactoryProperty() rowFactory}
+ * that replaces an entire row of a TableView.
+ *
+ */
         bold.addListener((ObservableValue<? extends Boolean> observable, Boolean oldVal, Boolean newVal) -> {
             if (currentItem != null && currentItem == getItem()) {
                 updateItem(getItem(), isEmpty());

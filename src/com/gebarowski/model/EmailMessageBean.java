@@ -9,11 +9,6 @@ import java.util.Map;
 
 public class EmailMessageBean extends AbstractTableItem {
 
-    /**
-     *
-     */
-
-
     public static Map<String, Integer> formattedValues = new HashMap<String, Integer>();
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;

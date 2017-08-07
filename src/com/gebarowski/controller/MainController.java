@@ -2,6 +2,8 @@ package com.gebarowski.controller;
 
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.SampleData;
+import com.gebarowski.model.Test;
+import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
 import javafx.fxml.FXML;
@@ -53,6 +55,7 @@ public class MainController extends AbstractController implements Initializable 
         if (message != null) {
             boolean value = message.isRead();
             message.setRead(!value);
+
         }
 
     }
@@ -80,6 +83,29 @@ public class MainController extends AbstractController implements Initializable 
                 return int1.compareTo(int2);
             }
         });
+
+        EmailFolderBean<String> root = new EmailFolderBean<String>("");
+        emailFoldersTreeView.setRoot(root);
+        emailFoldersTreeView.setShowRoot(false);
+
+        EmailFolderBean<String> gebarowski = new EmailFolderBean<String>("michal.gebarowski@gmail.com");
+        root.getChildren().add(gebarowski);
+
+        EmailFolderBean<String> Inbox = new EmailFolderBean<String>("Inbox", "CompleteInbox");
+        EmailFolderBean<String> Sent = new EmailFolderBean<String>("Sent", "CompleteInbox");
+            Sent.getChildren().add(new EmailFolderBean<String>("Subfolder", "SubfolderComplete"));
+            Sent.getChildren().add(new EmailFolderBean<String>("Subfolder2", "Subfolder2Complete"));
+        EmailFolderBean<String> Spam = new EmailFolderBean<String>("Spam", "CompleteInbox");
+
+        gebarowski.getChildren().addAll(Inbox,Sent,Spam);
+
+
+
+
+
+
+
+
 
 
         emailFoldersTreeView.setOnMouseClicked(e ->
@@ -114,11 +140,11 @@ public class MainController extends AbstractController implements Initializable 
             stage.setScene(viewFactory.getEMailContextMenuScene());
             stage.show();
         });
-        emailFoldersTreeView.setRoot(root);
-        root.setValue("test@gmail.com");
+
+
         emailTableView.setContextMenu(new ContextMenu(showDetails));
-        root.getChildren().addAll(inbox, sent, spam, trash);
-        root.setExpanded(true);
+
+
         button2.setOnAction(e -> changeReadAction()
         );
     }
@@ -127,4 +153,4 @@ public class MainController extends AbstractController implements Initializable 
 
 //TODO Set icon PART-4
 //TODO Add log library PART-4
-//TODO Try and catch
+// TODO Try and catch

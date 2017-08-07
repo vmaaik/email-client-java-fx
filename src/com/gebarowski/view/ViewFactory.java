@@ -33,8 +33,8 @@ public class ViewFactory {
 
 
     /**
-     * Both controllers have the same modelAcces
-     * s object
+     * Both controllers have the same modelAccess
+     * object
      *
      */
     public Scene getMainScene() throws OperationNotSupportedException {
