@@ -1,12 +1,13 @@
 package com.gebarowski.controller;
 
 import com.gebarowski.model.EmailMessageBean;
+import com.gebarowski.model.folder.EmailFolderBean;
 
 /**
  * Point where all controllers can access the model
- * Reference for seleted EmailMessageBean.
+ * Reference for selected EmailMessageBean.
  * One email needs to be selected in different windows.
- * It has to reference to selected message bean
+ * It has the reference to selected message bean
  */
 public class ModelAccess {
 
@@ -19,4 +20,19 @@ public class ModelAccess {
     public void setSelectedMessage(EmailMessageBean selectedMessage) {
         this.selectedMessage = selectedMessage;
     }
+
+
+    /**
+     *
+     * @return
+     */
+    public EmailFolderBean<String> getSelectedFolder() {
+        return selectedFolder;
+    }
+
+    public void setSelectedFolder(EmailFolderBean<String> selectedFolder) {
+        this.selectedFolder = selectedFolder;
+    }
+
+    private EmailFolderBean<String> selectedFolder;
 }

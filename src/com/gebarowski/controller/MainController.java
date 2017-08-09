@@ -2,7 +2,6 @@ package com.gebarowski.controller;
 
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.SampleData;
-import com.gebarowski.model.Test;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
@@ -19,31 +18,24 @@ import java.util.ResourceBundle;
 
 public class MainController extends AbstractController implements Initializable {
 
-    @FXML
-    public TableView<EmailMessageBean> emailTableView;
+
     @FXML
     public TreeView<String> emailFoldersTreeView;
-    @FXML
-    public TreeItem<String> root = new TreeItem<String>();
-    @FXML
-    WebView messageRenderer;
-    SampleData data = new SampleData();
-    MenuItem showDetails = new MenuItem("Show details");
-    TreeItem<String> inbox = new TreeItem<String>("Inbox");
-    TreeItem<String> sent = new TreeItem<String>("Sent");
-    TreeItem<String> spam = new TreeItem<String>("Spam");
-    TreeItem<String> trash = new TreeItem<String>("Trash");
-    ViewFactory viewFactory = ViewFactory.defaultViewFactory;
-    @FXML
-    private Button button1;
-    @FXML
-    private Button button2;
+    public TableView<EmailMessageBean> emailTableView;
+    private SampleData data = new SampleData();
+    private MenuItem showDetails = new MenuItem("Show details");
     @FXML
     private TableColumn<EmailMessageBean, String> subjectCol;
     @FXML
     private TableColumn<EmailMessageBean, String> senderCol;
     @FXML
     private TableColumn<EmailMessageBean, String> sizeCol;
+    @FXML
+    private WebView messageRenderer;
+    @FXML
+    private Button button1;
+    @FXML
+    private Button button2;
 
     public MainController(ModelAccess modelAccess) {
         super(modelAccess);
@@ -52,10 +44,17 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     public void changeReadAction() {
         EmailMessageBean message = getModelAccess().getSelectedMessage();
+
         if (message != null) {
             boolean value = message.isRead();
             message.setRead(!value);
-
+            EmailFolderBean<String> folder = getModelAccess().getSelectedFolder();
+            if (folder != null) {
+                if (value) {
+                    folder.increaseUnreadMessageCounter(1);
+                } else
+                    folder.decreaseUnreadMessageCounter();
+            }
         }
 
     }
@@ -64,6 +63,7 @@ public class MainController extends AbstractController implements Initializable 
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
 
+        ViewFactory viewFactory = ViewFactory.defaultViewFactory;
         emailTableView.setRowFactory(e -> new BoldRowFactory<>());
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
@@ -84,40 +84,40 @@ public class MainController extends AbstractController implements Initializable 
             }
         });
 
-        EmailFolderBean<String> root = new EmailFolderBean<String>("");
+
+        EmailFolderBean<String> root = new EmailFolderBean<>("");
         emailFoldersTreeView.setRoot(root);
         emailFoldersTreeView.setShowRoot(false);
 
-        EmailFolderBean<String> gebarowski = new EmailFolderBean<String>("michal.gebarowski@gmail.com");
+        EmailFolderBean<String> gebarowski = new EmailFolderBean<>("michal.gebarowski@gmail.com");
         root.getChildren().add(gebarowski);
 
-        EmailFolderBean<String> Inbox = new EmailFolderBean<String>("Inbox", "CompleteInbox");
-        EmailFolderBean<String> Sent = new EmailFolderBean<String>("Sent", "CompleteInbox");
-            Sent.getChildren().add(new EmailFolderBean<String>("Subfolder", "SubfolderComplete"));
-            Sent.getChildren().add(new EmailFolderBean<String>("Subfolder2", "Subfolder2Complete"));
-        EmailFolderBean<String> Spam = new EmailFolderBean<String>("Spam", "CompleteInbox");
+        //folder structure
+        EmailFolderBean<String> Inbox = new EmailFolderBean<>("Inbox", "CompleteInbox");
+        EmailFolderBean<String> Sent = new EmailFolderBean<>("Sent", "CompleteInbox");
+        Sent.getChildren().add(new EmailFolderBean<>("Subfolder", "SubfolderComplete"));
+        Sent.getChildren().add(new EmailFolderBean<>("Subfolder2", "Subfolder2Complete"));
+        EmailFolderBean<String> Spam = new EmailFolderBean<>("Spam", "CompleteInbox");
 
-        gebarowski.getChildren().addAll(Inbox,Sent,Spam);
-
-
-
-
-
-
+        gebarowski.getChildren().addAll(Inbox, Sent, Spam);
+        Inbox.getData().addAll(SampleData.Inbox);
+        Sent.getData().addAll(SampleData.Sent);
+        Spam.getData().addAll(SampleData.Spam);
 
 
+        /**
+         * triggers actions in tableView based on EmailFolderBean methods
+         * model is informed at the end by adding selected folder
+         */
+        emailFoldersTreeView.setOnMouseClicked(e -> {
 
+            EmailFolderBean<String> item = (EmailFolderBean<String>) emailFoldersTreeView.getSelectionModel().getSelectedItem();
+            if (item != null && !item.isTopElement()) {
 
-        emailFoldersTreeView.setOnMouseClicked(e ->
-
-                /**
-                 * triggers actions in tableView based on item value and MAP in sampleData
-                 */
-        {
-            TreeItem<String> item = emailFoldersTreeView.getSelectionModel().getSelectedItem();
-            if (item != null) {
-
-                emailTableView.setItems(data.emailFolders.get(item.getValue()));
+                emailTableView.setItems(item.getData());
+                getModelAccess().setSelectedFolder(item);
+                //clear the selected message:
+                getModelAccess().setSelectedMessage(null);
 
             }
         });
@@ -144,7 +144,6 @@ public class MainController extends AbstractController implements Initializable 
 
         emailTableView.setContextMenu(new ContextMenu(showDetails));
 
-
         button2.setOnAction(e -> changeReadAction()
         );
     }
@@ -153,4 +152,4 @@ public class MainController extends AbstractController implements Initializable 
 
 //TODO Set icon PART-4
 //TODO Add log library PART-4
-// TODO Try and catch
+//TODO Try and catch/ Exceptions
