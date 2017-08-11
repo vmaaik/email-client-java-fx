@@ -1,7 +1,6 @@
 package com.gebarowski.model;
 
 import com.gebarowski.model.table.AbstractTableItem;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.HashMap;
@@ -10,11 +9,12 @@ import java.util.Map;
 public class EmailMessageBean extends AbstractTableItem {
 
     public static Map<String, Integer> formattedValues = new HashMap<String, Integer>();
+
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
     private String content;
-    private SimpleBooleanProperty isRead;
+
 
     public EmailMessageBean(String Subject, String Sender, int size, String Content, boolean isRead) {
         super(isRead);
@@ -22,7 +22,6 @@ public class EmailMessageBean extends AbstractTableItem {
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
         this.content = Content;
-
 
 
     }
@@ -42,7 +41,7 @@ public class EmailMessageBean extends AbstractTableItem {
         return size.get();
     }
 
-    public String getContent(){
+    public String getContent() {
 
         return content;
     }
@@ -72,5 +71,13 @@ public class EmailMessageBean extends AbstractTableItem {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "EmailMessageBean{" +
+                "sender=" + sender.get() +
+                ", subject=" + subject.get() +
+                ", size=" + size.get() +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

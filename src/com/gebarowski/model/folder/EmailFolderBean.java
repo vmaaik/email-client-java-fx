@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
+import javax.mail.Message;
+
 /**
  * New type of TreeItem which holds information about messages
  * ie. unread message, counter, name etc.
@@ -47,6 +49,7 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         //TODO call the super here and set up icon for the folder (PART-4)
         this.name = value;
         this.completeName = completeName;
+        System.out.println("EmailFolderBean " + this.name + " created");
     }
 
     /**
@@ -72,6 +75,7 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         unreadMessageCount--;
         updateValue();
     }
+
 
     /**
      *

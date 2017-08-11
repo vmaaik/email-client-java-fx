@@ -99,6 +99,7 @@ public class MainController extends AbstractController implements Initializable 
         Sent.getChildren().add(new EmailFolderBean<>("Subfolder2", "Subfolder2Complete"));
         EmailFolderBean<String> Spam = new EmailFolderBean<>("Spam", "CompleteInbox");
 
+
         gebarowski.getChildren().addAll(Inbox, Sent, Spam);
         Inbox.getData().addAll(SampleData.Inbox);
         Sent.getData().addAll(SampleData.Sent);
