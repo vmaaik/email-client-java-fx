@@ -1,30 +1,28 @@
-package com.gebarowski;
+package com.gebarowski.model;
 
+import com.gebarowski.model.table.AbstractTableItem;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EmailMessageBean {
-
-    /**
-     *
-     */
-
+public class EmailMessageBean extends AbstractTableItem {
 
     public static Map<String, Integer> formattedValues = new HashMap<String, Integer>();
+
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
     private String content;
 
-    public EmailMessageBean(String Subject, String Sender, int size, String Content) {
 
+    public EmailMessageBean(String Subject, String Sender, int size, String Content, boolean isRead) {
+        super(isRead);
         this.sender = new SimpleStringProperty(Sender);
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
         this.content = Content;
+
 
     }
 
@@ -43,7 +41,7 @@ public class EmailMessageBean {
         return size.get();
     }
 
-    public String getContent(){
+    public String getContent() {
 
         return content;
     }
@@ -73,5 +71,13 @@ public class EmailMessageBean {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "EmailMessageBean{" +
+                "sender=" + sender.get() +
+                ", subject=" + subject.get() +
+                ", size=" + size.get() +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
