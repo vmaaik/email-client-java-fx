@@ -7,6 +7,10 @@ import javafx.scene.control.TreeItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.Flags;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+
 /**
  * New type of TreeItem which holds information about messages
  * ie. unread message, counter, name etc.
@@ -79,16 +83,19 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         updateValue();
     }
 
-
-    /**
-     * @param email
-     */
-    public void addEmail(EmailMessageBean email) {
-        data.add(email);
-        if (!email.isRead()) {
+    public void addEmail(Message message) throws MessagingException {
+        boolean isRead = message.getFlags().contains(Flags.Flag.SEEN);
+        EmailMessageBean emailMessageBean = new EmailMessageBean(message.getSubject(),
+                message.getFrom()[0].toString(),
+                message.getSize(),
+                "",
+                isRead);
+        data.add(emailMessageBean);
+        if (!isRead) {
             increaseUnreadMessageCounter(1);
         }
     }
+
 
     public boolean isTopElement() {
         return topElement;

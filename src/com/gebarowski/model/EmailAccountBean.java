@@ -79,23 +79,4 @@ public class EmailAccountBean {
         return loginState;
     }
 
-    public void addEmailsToData(ObservableList<EmailMessageBean> data) {
-        try {
-
-            System.out.println("fetching emails thread: " + Thread.currentThread().getName());
-            Folder folder = store.getFolder("INBOX");
-
-            System.out.println("Inbox folder has been open");
-            folder.open(Folder.READ_ONLY);
-            for (int i = folder.getMessageCount(); i > 0; i--) {
-                Message message = folder.getMessage(i);
-                EmailMessageBean messageBean = new EmailMessageBean(message.getSubject(), message.getFrom()[0].toString(),
-                        message.getSize(), "", message.getFlags().contains(Flags.Flag.SEEN));
-                System.out.println("Message " + messageBean + " has been fetched!");
-                data.add(messageBean);
-            }
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
 }

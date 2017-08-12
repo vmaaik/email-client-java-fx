@@ -41,11 +41,15 @@ public class FetchFoldersService extends Service<Void> {
                         foldersRoot.getChildren().add(item);
                         item.setExpanded(true);
                         logger.info("Folder: {} has been added to the tree view", folder.getName());
+                        FetchMessagesService fetchMessagesService = new FetchMessagesService(item, folder);
+                        fetchMessagesService.start();
                         Folder[] subFolders = folder.list();
                         for (Folder subFolder : subFolders) {
                             EmailFolderBean<String> subitem = new EmailFolderBean<String>(subFolder.getName(), subFolder.getFullName());
                             item.getChildren().add(subitem);
                             logger.info("Subfolder: {} has been added to the tree view. Full name: {}.", subFolder.getName(),subFolder.getFullName());
+                            FetchMessagesService fetchMessagesSubfolderService = new FetchMessagesService(item, subFolder);
+                            fetchMessagesSubfolderService.start();
                         }
                     }
                 }
