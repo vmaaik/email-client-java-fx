@@ -1,7 +1,7 @@
 package com.gebarowski.controller;
 
+import com.gebarowski.controller.services.CreateAndRegisterEmailAccountService;
 import com.gebarowski.model.EmailMessageBean;
-import com.gebarowski.model.SampleData;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
@@ -22,7 +22,7 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     public TreeView<String> emailFoldersTreeView;
     public TableView<EmailMessageBean> emailTableView;
-    private SampleData data = new SampleData();
+
     private MenuItem showDetails = new MenuItem("Show details");
     @FXML
     private TableColumn<EmailMessageBean, String> subjectCol;
@@ -88,23 +88,10 @@ public class MainController extends AbstractController implements Initializable 
         EmailFolderBean<String> root = new EmailFolderBean<>("");
         emailFoldersTreeView.setRoot(root);
         emailFoldersTreeView.setShowRoot(false);
+        CreateAndRegisterEmailAccountService newAccount = new CreateAndRegisterEmailAccountService("micgebak@gmail.com", "Test123!", root);
+        newAccount.start();
 
-        EmailFolderBean<String> gebarowski = new EmailFolderBean<>("michal.gebarowski@gmail.com");
-        root.getChildren().add(gebarowski);
-
-        //folder structure
-        EmailFolderBean<String> Inbox = new EmailFolderBean<>("Inbox", "CompleteInbox");
-        EmailFolderBean<String> Sent = new EmailFolderBean<>("Sent", "CompleteInbox");
-        Sent.getChildren().add(new EmailFolderBean<>("Subfolder", "SubfolderComplete"));
-        Sent.getChildren().add(new EmailFolderBean<>("Subfolder2", "Subfolder2Complete"));
-        EmailFolderBean<String> Spam = new EmailFolderBean<>("Spam", "CompleteInbox");
-
-
-        gebarowski.getChildren().addAll(Inbox, Sent, Spam);
-        Inbox.getData().addAll(SampleData.Inbox);
-        Sent.getData().addAll(SampleData.Sent);
-        Spam.getData().addAll(SampleData.Spam);
-
+        emailTableView.setContextMenu(new ContextMenu(showDetails));
 
         /**
          * triggers actions in tableView based on EmailFolderBean methods
@@ -142,8 +129,6 @@ public class MainController extends AbstractController implements Initializable 
             stage.show();
         });
 
-
-        emailTableView.setContextMenu(new ContextMenu(showDetails));
 
         button2.setOnAction(e -> changeReadAction()
         );

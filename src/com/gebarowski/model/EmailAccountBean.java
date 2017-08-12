@@ -83,6 +83,8 @@ public class EmailAccountBean {
 
     public void addEmailsToData(ObservableList<EmailMessageBean> data) {
         try {
+
+            System.out.println("fetching emails thread: "+Thread.currentThread().getName());
             Folder folder = store.getFolder("INBOX");
 
             System.out.println("Inbox folder has been open");
