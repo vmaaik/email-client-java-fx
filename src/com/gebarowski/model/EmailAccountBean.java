@@ -1,11 +1,15 @@
 package com.gebarowski.model;
 
 import javafx.collections.ObservableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import java.util.Properties;
 
 public class EmailAccountBean {
+
+    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class);
 
     private String emailAddress;
     private String password;
@@ -18,11 +22,7 @@ public class EmailAccountBean {
     public EmailAccountBean(String EmailAddress, String Password) {
         this.emailAddress = EmailAddress;
         this.password = Password;
-
-        /**
-         * Configuration for gmail
-         */
-
+        //Configuration for gmail
         properties = new Properties();
         properties.setProperty("mail.store.protocol", "imaps");
         properties.setProperty("mail.transport.protocol", "smtps");
@@ -41,23 +41,21 @@ public class EmailAccountBean {
 
         };
 
-
-        //Connecting
+        // Connecting with imap
         session = Session.getInstance(properties, auth);
-        System.out.println("Session created!");
+        logger.info("Session created");
         try {
             //get info from the session
             this.store = session.getStore();
-            System.out.println("store");
+            logger.info("Store taken from the session");
             store.connect(properties.getProperty("incomingHost"), emailAddress, password);
-
-            System.out.println("EmailAccountBean constructed successfully");
+            logger.info("Email account {}. has been successfully connected with {}.", emailAddress, properties.getProperty("incomingHost"));
             loginState = EmailConstants.LOGIN_STATE_SUCCEDED;
 
         } catch (Exception e) {
             e.printStackTrace();
             loginState = EmailConstants.LOGIN_STATE_FAILED_BY_CREDENTIALS;
-            System.out.println("EmailAccountBean failed");
+            logger.error(" Connection {}. with {}. FAILED ", emailAddress, properties.getProperty("incomingHost"));
         }
     }
 
@@ -84,7 +82,7 @@ public class EmailAccountBean {
     public void addEmailsToData(ObservableList<EmailMessageBean> data) {
         try {
 
-            System.out.println("fetching emails thread: "+Thread.currentThread().getName());
+            System.out.println("fetching emails thread: " + Thread.currentThread().getName());
             Folder folder = store.getFolder("INBOX");
 
             System.out.println("Inbox folder has been open");

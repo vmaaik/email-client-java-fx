@@ -4,14 +4,16 @@ import com.gebarowski.model.EmailMessageBean;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-
-import javax.mail.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * New type of TreeItem which holds information about messages
  * ie. unread message, counter, name etc.
  */
 public class EmailFolderBean<T> extends TreeItem<String> {
+
+    final Logger logger = LoggerFactory.getLogger(EmailFolderBean.class);
 
     // indicates email folder top element
     private boolean topElement = false;
@@ -36,6 +38,7 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         this.data = null;
         this.topElement = true;
         this.setExpanded(true);
+        logger.info("Root folder: {} has been created", value);
     }
 
     /**
@@ -49,7 +52,7 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         //TODO call the super here and set up icon for the folder (PART-4)
         this.name = value;
         this.completeName = completeName;
-        System.out.println("EmailFolderBean " + this.name + " created");
+        logger.info("Folder: {} has been created. Complete name: {}.", value, completeName);
     }
 
     /**
@@ -78,7 +81,6 @@ public class EmailFolderBean<T> extends TreeItem<String> {
 
 
     /**
-     *
      * @param email
      */
     public void addEmail(EmailMessageBean email) {

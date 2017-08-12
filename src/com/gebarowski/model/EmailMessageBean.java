@@ -2,11 +2,15 @@ package com.gebarowski.model;
 
 import com.gebarowski.model.table.AbstractTableItem;
 import javafx.beans.property.SimpleStringProperty;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EmailMessageBean extends AbstractTableItem {
+
+    final Logger logger = LoggerFactory.getLogger(EmailMessageBean.class);
+
 
     public static Map<String, Integer> formattedValues = new HashMap<String, Integer>();
 
@@ -22,6 +26,7 @@ public class EmailMessageBean extends AbstractTableItem {
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
         this.content = Content;
+        logger.info("Email {}. has been created", toString());
 
 
     }
