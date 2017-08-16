@@ -28,7 +28,7 @@ public class FetchMessagesService extends Service<Void> {
                 int folderSize = folder.getMessageCount();
                 for(int i = folderSize; i>0; i--){
                     Message currentMessage = folder.getMessage(i);
-                    emailFolder.addEmail(currentMessage);
+                    emailFolder.addEmail(-1, currentMessage);
                 }
 
                 return null;

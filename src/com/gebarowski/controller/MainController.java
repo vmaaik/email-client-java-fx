@@ -88,7 +88,10 @@ public class MainController extends AbstractController implements Initializable 
         EmailFolderBean<String> root = new EmailFolderBean<>("");
         emailFoldersTreeView.setRoot(root);
         emailFoldersTreeView.setShowRoot(false);
-        CreateAndRegisterEmailAccountService newAccount = new CreateAndRegisterEmailAccountService("micgebak@gmail.com", "Test123!", root);
+        CreateAndRegisterEmailAccountService newAccount = new CreateAndRegisterEmailAccountService("micgebak@gmail.com",
+                "Test123!",
+                root,
+                getModelAccess());
         newAccount.start();
 
         emailTableView.setContextMenu(new ContextMenu(showDetails));

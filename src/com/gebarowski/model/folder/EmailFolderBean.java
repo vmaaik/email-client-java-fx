@@ -83,14 +83,19 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         updateValue();
     }
 
-    public void addEmail(Message message) throws MessagingException {
+    public void addEmail(int possition, Message message) throws MessagingException {
         boolean isRead = message.getFlags().contains(Flags.Flag.SEEN);
         EmailMessageBean emailMessageBean = new EmailMessageBean(message.getSubject(),
                 message.getFrom()[0].toString(),
                 message.getSize(),
                 "",
                 isRead);
-        data.add(emailMessageBean);
+        if (possition < 0) {
+            data.add(emailMessageBean);
+        }else{
+            data.add(possition, emailMessageBean);
+        }
+
         if (!isRead) {
             increaseUnreadMessageCounter(1);
         }

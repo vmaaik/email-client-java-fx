@@ -3,6 +3,10 @@ package com.gebarowski.controller;
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.folder.EmailFolderBean;
 
+import javax.mail.Folder;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Point where all controllers can access the model
  * Reference for selected EmailMessageBean.
@@ -12,6 +16,16 @@ import com.gebarowski.model.folder.EmailFolderBean;
 public class ModelAccess {
 
     private EmailMessageBean selectedMessage;
+    private EmailFolderBean<String> selectedFolder;
+    /**
+     * In order to have an access to all folders and add listener to them
+     */
+
+    private List<Folder> folderList = new ArrayList<Folder>();
+
+    public void addFolder(Folder folder) {
+        folderList.add(folder);
+    }
 
     public EmailMessageBean getSelectedMessage() {
         return selectedMessage;
@@ -21,9 +35,7 @@ public class ModelAccess {
         this.selectedMessage = selectedMessage;
     }
 
-
     /**
-     *
      * @return
      */
     public EmailFolderBean<String> getSelectedFolder() {
@@ -34,5 +46,8 @@ public class ModelAccess {
         this.selectedFolder = selectedFolder;
     }
 
-    private EmailFolderBean<String> selectedFolder;
+    public List<Folder> getFolderList() {
+        return folderList;
+    }
+
 }
