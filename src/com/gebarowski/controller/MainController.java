@@ -1,6 +1,7 @@
 package com.gebarowski.controller;
 
 import com.gebarowski.controller.services.CreateAndRegisterEmailAccountService;
+import com.gebarowski.controller.services.FolderUpdaterService;
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
@@ -62,6 +63,9 @@ public class MainController extends AbstractController implements Initializable 
     @Override
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
+
+        FolderUpdaterService folderUpdaterService = new FolderUpdaterService(getModelAccess().getFolderList());
+        folderUpdaterService.start();
 
         ViewFactory viewFactory = ViewFactory.defaultViewFactory;
         emailTableView.setRowFactory(e -> new BoldRowFactory<>());
