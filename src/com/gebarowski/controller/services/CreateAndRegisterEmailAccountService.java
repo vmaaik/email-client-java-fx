@@ -29,7 +29,7 @@ public class CreateAndRegisterEmailAccountService extends Service<Integer> {
             @Override
             protected Integer call() throws Exception {
                 EmailAccountBean emailAccount = new EmailAccountBean(emailAddress, password);
-                if(emailAccount.getLoginState() == EmailConstants.LOGIN_STATE_SUCCEDED){
+                if (emailAccount.getLoginState() == EmailConstants.LOGIN_STATE_SUCCEDED) {
                     EmailFolderBean<String> emailFolderBean = new EmailFolderBean<String>(emailAddress);
                     folderRoot.getChildren().add(emailFolderBean);
                     // fetching folders

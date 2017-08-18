@@ -11,11 +11,8 @@ import java.util.Map;
 
 public class EmailMessageBean extends AbstractTableItem {
 
-    final Logger logger = LoggerFactory.getLogger(EmailMessageBean.class);
-
-
     public static Map<String, Integer> formattedValues = new HashMap<String, Integer>();
-
+    final Logger logger = LoggerFactory.getLogger(EmailMessageBean.class);
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
@@ -46,7 +43,6 @@ public class EmailMessageBean extends AbstractTableItem {
 
         return size.get();
     }
-
 
 
     private String formatSize(int size) {
