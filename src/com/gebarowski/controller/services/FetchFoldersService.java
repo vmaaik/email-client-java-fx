@@ -95,9 +95,6 @@ public class FetchFoldersService extends Service<Void> {
                 for (int i = 0; i < e.getMessages().length; i++) {
 
                     try {
-                        logger.info("iteracja {}", i);
-                        logger.info("e.getMessages().length {} FOLDER NAME {}", e.getMessages().length, folder.getName());
-
                         Message currentMessage = folder.getMessage(folder.getMessageCount() - i);
                         item.addEmail(1, currentMessage);
                     } catch (MessagingException e1) {

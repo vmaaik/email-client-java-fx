@@ -124,7 +124,7 @@ public class MainController extends AbstractController implements Initializable 
 
             if (email != null) {
                 getModelAccess().setSelectedMessage(email);
-                messageRenderer.getEngine().loadContent(email.getContent());
+               // messageRenderer.getEngine().loadContent(email.getContent());
 
             }
 

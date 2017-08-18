@@ -4,6 +4,8 @@ import com.gebarowski.model.table.AbstractTableItem;
 import javafx.beans.property.SimpleStringProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.mail.Message;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,15 +19,14 @@ public class EmailMessageBean extends AbstractTableItem {
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
-    private String content;
+    private Message messageReference;
 
-
-    public EmailMessageBean(String Subject, String Sender, int size, String Content, boolean isRead) {
+    public EmailMessageBean(String Subject, String Sender, int size, boolean isRead, Message messageReference) {
         super(isRead);
         this.sender = new SimpleStringProperty(Sender);
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
-        this.content = Content;
+        this.messageReference = messageReference;
         logger.info("Email {}. has been created", toString());
 
 
@@ -46,10 +47,6 @@ public class EmailMessageBean extends AbstractTableItem {
         return size.get();
     }
 
-    public String getContent() {
-
-        return content;
-    }
 
 
     private String formatSize(int size) {
@@ -76,13 +73,17 @@ public class EmailMessageBean extends AbstractTableItem {
 
     }
 
+    public Message getMessageReference() {
+        return messageReference;
+    }
+
     @Override
     public String toString() {
         return "EmailMessageBean{" +
-                "sender=" + sender.get() +
-                ", subject=" + subject.get() +
-                ", size=" + size.get() +
-                ", content='" + content + '\'' +
+                "sender=" + sender +
+                ", subject=" + subject +
+                ", size=" + size +
+                ", messageReference=" + messageReference +
                 '}';
     }
 }

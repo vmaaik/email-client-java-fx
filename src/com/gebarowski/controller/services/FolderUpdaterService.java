@@ -10,7 +10,7 @@ import javax.mail.Folder;
 import java.util.List;
 
 /**
- * Service which is listening to new messages. Starts and never end.
+ * Service is listening to new messages. Starts and never end.
  */
 public class FolderUpdaterService extends Service<Void> {
 
@@ -34,7 +34,6 @@ public class FolderUpdaterService extends Service<Void> {
                             for (Folder folder : folderList) {
                                 if (folder.getType() != Folder.HOLDS_FOLDERS && folder.isOpen()) {
                                     folder.getMessageCount();
-                                    logger.info("Get Message Count {} in folder {} ", folder.getMessageCount(), folder.getName());
                                 }
                             }
                         }

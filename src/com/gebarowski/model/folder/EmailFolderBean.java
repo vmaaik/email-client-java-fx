@@ -88,11 +88,10 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         EmailMessageBean emailMessageBean = new EmailMessageBean(message.getSubject(),
                 message.getFrom()[0].toString(),
                 message.getSize(),
-                "",
-                isRead);
+                isRead, message);
         if (possition < 0) {
             data.add(emailMessageBean);
-        }else{
+        } else {
             data.add(possition, emailMessageBean);
         }
 
