@@ -67,7 +67,8 @@ public class MessageRendererService extends Service<Void> {
 
                     //check if the part of nested message is plain text or HTML
                     if (contentType.contains("TEXT/HTML") ||
-                            contentType.contains(("TEXT/PLAIN")) ||
+                            contentType.contains("TEXT/PLAIN") ||
+                            contentType.contains("mixed") ||
                             contentType.contains("text")) {
                         if (stringBuffer.length() == 0) {
                             stringBuffer.append(bodyPart.getContent().toString());
@@ -78,10 +79,15 @@ public class MessageRendererService extends Service<Void> {
                          *  Instead, it defines the content of what is transferred:
                          *  the format of the messages, attachments, and so on.
                          */
-                    } else if (contentType.toLowerCase().contains("application")) {
+                    }else if(contentType.toLowerCase().contains("application") ||
+                            contentType.toLowerCase().contains("image") ||
+                            contentType.toLowerCase().contains("audio")){
                         logger.info("Attepmting to render message which contains attachments");
                         MimeBodyPart mimeBodyPart = (MimeBodyPart) bodyPart;
                         messageToRender.addAttachment(mimeBodyPart);
+
+
+
                         logger.info("Attachment {} has been added to the attachment list.", mimeBodyPart.getFileName());
                     } else if (bodyPart.getContentType().contains("multipart")) {
                         logger.info("Attepmting to render nested message which contains MULTIPARTS");

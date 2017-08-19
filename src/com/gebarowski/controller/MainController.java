@@ -85,8 +85,10 @@ public class MainController extends AbstractController implements Initializable 
     public void initialize(URL location, ResourceBundle resources) {
 
         downAttachProgressBar.setVisible(false);
+
         downAttachLabel.setVisible(false);
         saveAttachmentService = new SaveAttachmentService( downAttachProgressBar, downAttachLabel);
+        downAttachProgressBar.progressProperty().bind(saveAttachmentService.progressProperty());
         messageRendererService = new MessageRendererService(messageRenderer.getEngine());
 
         FolderUpdaterService folderUpdaterService = new FolderUpdaterService(getModelAccess().getFolderList());

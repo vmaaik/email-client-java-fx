@@ -42,6 +42,7 @@ public class SaveAttachmentService extends Service<Void> {
 
                 try {
                     for (MimeBodyPart mimeBodyPart : messageToDownload.getAttachmentsList()) {
+                        updateProgress(messageToDownload.getAttachmentsList().indexOf(mimeBodyPart),messageToDownload.getAttachmentsList().size() );
                         mimeBodyPart.saveFile(LOCATION_OF_DOWNLOADS + mimeBodyPart.getFileName());
                         logger.info("File {} has been saved", mimeBodyPart.getFileName());
                         logger.info("LOCATION {}", LOCATION_OF_DOWNLOADS);
