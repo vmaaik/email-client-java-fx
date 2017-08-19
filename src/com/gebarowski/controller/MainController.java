@@ -133,7 +133,7 @@ public class MainController extends AbstractController implements Initializable 
                 messageRendererService.setMessageToRender(email);
                 // The same as in Swing SwingUtilities.invokeLater();
                 // Threads which changes the GUI need to work in JavaFX Application Thread
-                Platform.runLater(messageRendererService);
+                messageRendererService.restart();
 
             }
 

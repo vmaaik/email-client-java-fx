@@ -12,7 +12,7 @@ import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 
-public class MessageRendererService extends Service<Void> implements Runnable {
+public class MessageRendererService extends Service<Void> {
     private static final Logger logger = LoggerFactory.getLogger(MessageRendererService.class);
 
     private EmailMessageBean messageToRender;
@@ -21,6 +21,8 @@ public class MessageRendererService extends Service<Void> implements Runnable {
 
     public MessageRendererService(WebEngine messageRendererEngine) {
         this.messageRendererEngine = messageRendererEngine;
+        // Invoked in MainJavaFx Thread
+        this.setOnSucceeded(e -> showMessage());
     }
 
 
@@ -33,15 +35,10 @@ public class MessageRendererService extends Service<Void> implements Runnable {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-
+                renderMessage();
                 return null;
             }
         };
-    }
-
-    @Override
-    public void run() {
-        renderMessage();
     }
 
     private void renderMessage() {
@@ -86,13 +83,25 @@ public class MessageRendererService extends Service<Void> implements Runnable {
                 }
 
             }
-            messageRendererEngine.loadContent(stringBuffer.toString());
-            logger.info("Content has been loaded");
+
+
         } catch (Exception e) {
             e.printStackTrace();
             logger.info("Rendering message {} FAILED", messageToRender.toString());
         }
     }
 
+    /**
+     * This fragment of code was previously placed in renderMessage() method. Now is
+     * divided in order to use renderMessage() in different thread than JavaFx Main Thread.
+     * Rendering big emails in Main JavaFx Thread frozen the application.
+     * Once succeeded this method is called.
+     * Handles the info about attachments
+     */
+    private void showMessage() {
+        messageRendererEngine.loadContent(stringBuffer.toString());
+        logger.info("Message has been shown in WebView");
+
+    }
 
 }
