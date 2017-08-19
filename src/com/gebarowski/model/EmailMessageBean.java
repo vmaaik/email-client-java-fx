@@ -6,7 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmailMessageBean extends AbstractTableItem {
@@ -17,6 +21,9 @@ public class EmailMessageBean extends AbstractTableItem {
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
     private Message messageReference;
+    //attachments list
+    private List<MimeBodyPart> attachmentsList = new ArrayList<MimeBodyPart>();
+    private StringBuffer attachemntsNames = new StringBuffer();
 
     public EmailMessageBean(String Subject, String Sender, int size, boolean isRead, Message messageReference) {
         super(isRead);
@@ -27,6 +34,15 @@ public class EmailMessageBean extends AbstractTableItem {
         logger.info("Email {}. has been created", toString());
 
 
+    }
+
+
+    public List<MimeBodyPart> getAttachmentsList() {
+        return attachmentsList;
+    }
+
+    public String getAttachemntsNames() {
+        return attachemntsNames.toString();
     }
 
     public String getSender() {
@@ -71,6 +87,30 @@ public class EmailMessageBean extends AbstractTableItem {
 
     public Message getMessageReference() {
         return messageReference;
+    }
+
+    public void addAttachment(MimeBodyPart mimeBodyPart) {
+        attachmentsList.add(mimeBodyPart);
+        try {
+            attachemntsNames.append(mimeBodyPart.getFileName() + "; ");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasAttachments(){
+
+        return attachmentsList.size() > 0;
+    }
+
+    public void clearAttachmentList(){
+        /**
+         *  Clear attachmentList and attachmentNames in order to
+         *  prevent from adding the same files several times once
+         *  email is clicked.
+         */
+        attachmentsList.clear();
+        attachemntsNames.setLength(0);
     }
 
     @Override

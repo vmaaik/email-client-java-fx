@@ -44,39 +44,54 @@ public class MessageRendererService extends Service<Void> {
     private void renderMessage() {
         //clear the stringBuffer right before start rendering
         stringBuffer.setLength(0);
+        messageToRender.clearAttachmentList();
         Message message = messageToRender.getMessageReference();
         logger.info("Attempting to render message {}", messageToRender.toString());
         try {
+
+            //check if the content is plain text or HTML
             String messageType = message.getContentType();
             if (messageType.contains("TEXT/HTML") ||
                     messageType.contains(("TEXT/PLAIN")) ||
                     messageType.contains("text")) {
                 stringBuffer.append(message.getContent().toString());
-                logger.info("Message has been rendered (1). TYPE {}", messageType);
+                logger.info("Message has been rendered. No multipart, no attachments.  TYPE {}", messageType);
+
+                //check if the content is a nested message
             } else if (messageType.contains("multipart")) {
+                logger.info("Attepmting to render message which contains MULTIPART");
                 Multipart multipart = (Multipart) message.getContent();
                 for (int i = multipart.getCount() - 1; i >= 0; i--) {
                     BodyPart bodyPart = multipart.getBodyPart(i);
                     String contentType = bodyPart.getContentType();
+
+                    //check if the part of nested message is plain text or HTML
                     if (contentType.contains("TEXT/HTML") ||
                             contentType.contains(("TEXT/PLAIN")) ||
                             contentType.contains("text")) {
                         if (stringBuffer.length() == 0) {
                             stringBuffer.append(bodyPart.getContent().toString());
-                            logger.info("Message has been rendered (2). TYPE {}", contentType);
+                            logger.info("Message has been rendered. Multipart TYPE {}", contentType);
                         }
-                        //Attachments handling
+                        /** Check if the content has attachment
+                         *  MIME It is not a mail transfer protocol.
+                         *  Instead, it defines the content of what is transferred:
+                         *  the format of the messages, attachments, and so on.
+                         */
                     } else if (contentType.toLowerCase().contains("application")) {
+                        logger.info("Attepmting to render message which contains attachments");
                         MimeBodyPart mimeBodyPart = (MimeBodyPart) bodyPart;
-
+                        messageToRender.addAttachment(mimeBodyPart);
+                        logger.info("Attachment {} has been added to the attachment list.", mimeBodyPart.getFileName());
                     } else if (bodyPart.getContentType().contains("multipart")) {
+                        logger.info("Attepmting to render nested message which contains MULTIPARTS");
                         Multipart multipart1 = (Multipart) bodyPart.getContent();
                         for (int j = multipart1.getCount() - 1; j >= 0; j--) {
                             BodyPart bodyPart1 = multipart1.getBodyPart(j);
                             if ((bodyPart1.getContentType()).contains("TEXT/HTML") ||
                                     bodyPart1.getContentType().contains("TEXT/PLAIN")) {
                                 stringBuffer.append(bodyPart1.getContent().toString());
-                                logger.info("Message has been rendered(3). TYPE {}", bodyPart1.getContentType());
+                                logger.info("Message has been rendered. Nested multipart TYPE {}", bodyPart1.getContentType());
                             }
                         }
                     }

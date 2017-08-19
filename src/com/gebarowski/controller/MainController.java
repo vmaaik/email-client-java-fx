@@ -3,11 +3,11 @@ package com.gebarowski.controller;
 import com.gebarowski.controller.services.CreateAndRegisterEmailAccountService;
 import com.gebarowski.controller.services.FolderUpdaterService;
 import com.gebarowski.controller.services.MessageRendererService;
+import com.gebarowski.controller.services.SaveAttachmentService;
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -36,18 +36,34 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     private WebView messageRenderer;
     @FXML
-    private Button button1;
-    @FXML
-    private Button button2;
+    private Button button1, button2, downAttachButton;
+
     @FXML
     private MessageRendererService messageRendererService;
+    @FXML
+    private Label downAttachLabel;
+    @FXML
+    private ProgressBar downAttachProgressBar;
+    private SaveAttachmentService saveAttachmentService;
 
     public MainController(ModelAccess modelAccess) {
         super(modelAccess);
     }
 
+
     @FXML
-    public void changeReadAction() {
+    void downAttachButtonAction() {
+        EmailMessageBean message = emailTableView.getSelectionModel().getSelectedItem();
+        if (message != null && message.hasAttachments()) {
+            saveAttachmentService.setMessageToDownload(message);
+            saveAttachmentService.restart();
+        }
+
+    }
+
+    @FXML
+    void changeReadAction() {
+
         EmailMessageBean message = getModelAccess().getSelectedMessage();
 
         if (message != null) {
@@ -68,6 +84,9 @@ public class MainController extends AbstractController implements Initializable 
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
 
+        downAttachProgressBar.setVisible(false);
+        downAttachLabel.setVisible(false);
+        saveAttachmentService = new SaveAttachmentService( downAttachProgressBar, downAttachLabel);
         messageRendererService = new MessageRendererService(messageRenderer.getEngine());
 
         FolderUpdaterService folderUpdaterService = new FolderUpdaterService(getModelAccess().getFolderList());
@@ -131,6 +150,7 @@ public class MainController extends AbstractController implements Initializable 
             if (email != null) {
                 getModelAccess().setSelectedMessage(email);
                 messageRendererService.setMessageToRender(email);
+
                 // The same as in Swing SwingUtilities.invokeLater();
                 // Threads which changes the GUI need to work in JavaFX Application Thread
                 messageRendererService.restart();
@@ -145,9 +165,11 @@ public class MainController extends AbstractController implements Initializable 
             stage.show();
         });
 
+        downAttachButton.setOnAction(e -> downAttachButtonAction());
 
-        button2.setOnAction(e -> changeReadAction()
-        );
+
+
+
     }
 }
 

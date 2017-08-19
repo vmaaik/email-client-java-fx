@@ -17,11 +17,13 @@ public class ModelAccess {
 
     private EmailMessageBean selectedMessage;
     private EmailFolderBean<String> selectedFolder;
+
     /**
      * In order to have an access to all folders and add listener to them
      */
 
     private List<Folder> folderList = new ArrayList<Folder>();
+
 
     public void addFolder(Folder folder) {
         folderList.add(folder);
