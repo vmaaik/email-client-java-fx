@@ -56,7 +56,6 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         //TODO call the super here and set up icon for the folder (PART-4)
         this.name = value;
         this.completeName = completeName;
-        logger.info("Folder: {} has been created. Complete name: {}.", value, completeName);
     }
 
     /**

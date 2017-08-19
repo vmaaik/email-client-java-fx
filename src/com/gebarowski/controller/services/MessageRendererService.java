@@ -13,7 +13,7 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 
 public class MessageRendererService extends Service<Void> {
-    private static final Logger logger = LoggerFactory.getLogger(MessageRendererService.class);
+    private static final Logger logger = LoggerFactory.getLogger(MessageRendererService.class.getName());
 
     private EmailMessageBean messageToRender;
     private WebEngine messageRendererEngine;

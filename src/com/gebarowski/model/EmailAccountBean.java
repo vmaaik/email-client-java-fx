@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class EmailAccountBean {
 
-    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class);
+    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class.getName());
 
     private String emailAddress;
     private String password;
@@ -30,7 +30,6 @@ public class EmailAccountBean {
         properties.setProperty("mail.smtps.auth", "true");
         properties.setProperty("incomingHost", "imap.gmail.com");
         properties.setProperty("outgoingHost", "smtp.gmail.com");
-
         Authenticator auth = new Authenticator() {
             @Override
 
@@ -47,7 +46,6 @@ public class EmailAccountBean {
         try {
             //get info from the session
             this.store = session.getStore();
-            logger.info("Store taken from the session");
             store.connect(properties.getProperty("incomingHost"), emailAddress, password);
             logger.info("Email account {}. has been successfully connected with {}.", emailAddress, properties.getProperty("incomingHost"));
             loginState = EmailConstants.LOGIN_STATE_SUCCEDED;

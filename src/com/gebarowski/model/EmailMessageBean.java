@@ -31,9 +31,6 @@ public class EmailMessageBean extends AbstractTableItem {
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
         this.messageReference = messageReference;
-        logger.info("Email {}. has been created", toString());
-
-
     }
 
 
