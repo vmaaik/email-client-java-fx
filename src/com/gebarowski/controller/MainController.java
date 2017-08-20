@@ -8,8 +8,10 @@ import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebView;
@@ -36,8 +38,9 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     private WebView messageRenderer;
     @FXML
-    private Button button1, button2, downAttachButton;
-
+    private Button downAttachButton;
+    @FXML
+    private Button newMessageBtn;
     @FXML
     private MessageRendererService messageRendererService;
     @FXML
@@ -50,9 +53,18 @@ public class MainController extends AbstractController implements Initializable 
         super(modelAccess);
     }
 
+    @FXML
+    void setNewMessageBtnAction(ActionEvent event){
+        Scene scene = ViewFactory.defaultViewFactory.getComposeMessageScene();
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 
     @FXML
-    void downAttachButtonAction() {
+    void setDownAttachButtonAction(ActionEvent event) {
         EmailMessageBean message = emailTableView.getSelectionModel().getSelectedItem();
         if (message != null && message.hasAttachments()) {
             saveAttachmentService.setMessageToDownload(message);
@@ -61,24 +73,6 @@ public class MainController extends AbstractController implements Initializable 
 
     }
 
-    @FXML
-    void changeReadAction() {
-
-        EmailMessageBean message = getModelAccess().getSelectedMessage();
-
-        if (message != null) {
-            boolean value = message.isRead();
-            message.setRead(!value);
-            EmailFolderBean<String> folder = getModelAccess().getSelectedFolder();
-            if (folder != null) {
-                if (value) {
-                    folder.increaseUnreadMessageCounter(1);
-                } else
-                    folder.decreaseUnreadMessageCounter();
-            }
-        }
-
-    }
 
     @Override
     //Called to initialize a controller after its root element has been completely processed
@@ -94,8 +88,9 @@ public class MainController extends AbstractController implements Initializable 
         FolderUpdaterService folderUpdaterService = new FolderUpdaterService(getModelAccess().getFolderList());
         folderUpdaterService.start();
 
-        ViewFactory viewFactory = ViewFactory.defaultViewFactory;
+
         emailTableView.setRowFactory(e -> new BoldRowFactory<>());
+        ViewFactory viewFactory = ViewFactory.defaultViewFactory;
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("size"));
@@ -167,7 +162,8 @@ public class MainController extends AbstractController implements Initializable 
             stage.show();
         });
 
-        downAttachButton.setOnAction(e -> downAttachButtonAction());
+
+//        downAttachButton.setOnAction(e -> downAttachButtonAction());
 
 
 

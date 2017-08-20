@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.web.HTMLEditor?>
+
+<AnchorPane prefHeight="482.0" prefWidth="617.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutX="15.0" layoutY="14.0" text="From:" AnchorPane.leftAnchor="15.0" />
+        <Label layoutX="16.0" layoutY="44.0" text="To:" AnchorPane.leftAnchor="15.0" />
+        <Label layoutX="15.0" layoutY="74.0" text="Subject:" AnchorPane.leftAnchor="15.0" />
+        <Button layoutX="11.0" layoutY="117.0" mnemonicParsing="false" onAction="#attachBtnAction" text="Attach" />
+        <Label fx:id="attachmentsLabel" layoutX="75.0" layoutY="120.0" prefHeight="17.0" prefWidth="358.0" text="No attachments" />
+        <ChoiceBox fx:id="senderChoice" layoutX="61.0" layoutY="13.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="14.0" />
+        <TextField fx:id="recipientTextField" layoutX="62.0" layoutY="42.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="13.0" />
+        <TextField fx:id="subjectTextField" layoutX="62.0" layoutY="71.0" prefHeight="25.0" prefWidth="540.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="13.0" />
+        <HTMLEditor htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="10.0" layoutY="168.0" prefHeight="228.0" prefWidth="586.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="168.0" />
+        <Label fx:id="errorLabel" layoutX="7.0" layoutY="459.0" text="No errors detected" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" />
+        <Button layoutX="533.0" layoutY="402.0" mnemonicParsing="false" onAction="#sendBtnAction" prefHeight="49.0" prefWidth="77.0" text="Send" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="5.0" />
+    </children>
+</AnchorPane>
