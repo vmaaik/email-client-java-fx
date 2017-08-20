@@ -1,7 +1,10 @@
 package com.gebarowski.controller;
 
+import com.gebarowski.controller.services.CreateAndRegisterEmailAccountService;
+import com.gebarowski.controller.services.FolderUpdaterService;
+import com.gebarowski.controller.services.MessageRendererService;
+import com.gebarowski.controller.services.SaveAttachmentService;
 import com.gebarowski.model.EmailMessageBean;
-import com.gebarowski.model.SampleData;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
 import com.gebarowski.view.ViewFactory;
@@ -22,7 +25,7 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     public TreeView<String> emailFoldersTreeView;
     public TableView<EmailMessageBean> emailTableView;
-    private SampleData data = new SampleData();
+
     private MenuItem showDetails = new MenuItem("Show details");
     @FXML
     private TableColumn<EmailMessageBean, String> subjectCol;
@@ -33,16 +36,34 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     private WebView messageRenderer;
     @FXML
-    private Button button1;
+    private Button button1, button2, downAttachButton;
+
     @FXML
-    private Button button2;
+    private MessageRendererService messageRendererService;
+    @FXML
+    private Label downAttachLabel;
+    @FXML
+    private ProgressBar downAttachProgressBar;
+    private SaveAttachmentService saveAttachmentService;
 
     public MainController(ModelAccess modelAccess) {
         super(modelAccess);
     }
 
+
     @FXML
-    public void changeReadAction() {
+    void downAttachButtonAction() {
+        EmailMessageBean message = emailTableView.getSelectionModel().getSelectedItem();
+        if (message != null && message.hasAttachments()) {
+            saveAttachmentService.setMessageToDownload(message);
+            saveAttachmentService.restart();
+        }
+
+    }
+
+    @FXML
+    void changeReadAction() {
+
         EmailMessageBean message = getModelAccess().getSelectedMessage();
 
         if (message != null) {
@@ -63,10 +84,20 @@ public class MainController extends AbstractController implements Initializable 
     //Called to initialize a controller after its root element has been completely processed
     public void initialize(URL location, ResourceBundle resources) {
 
+        downAttachProgressBar.setVisible(false);
+
+        downAttachLabel.setVisible(false);
+        saveAttachmentService = new SaveAttachmentService( downAttachProgressBar, downAttachLabel);
+        downAttachProgressBar.progressProperty().bind(saveAttachmentService.progressProperty());
+        messageRendererService = new MessageRendererService(messageRenderer.getEngine());
+
+        FolderUpdaterService folderUpdaterService = new FolderUpdaterService(getModelAccess().getFolderList());
+        folderUpdaterService.start();
+
         ViewFactory viewFactory = ViewFactory.defaultViewFactory;
         emailTableView.setRowFactory(e -> new BoldRowFactory<>());
-        subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
-        senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
+        subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
+        senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("size"));
 
         sizeCol.setComparator(new Comparator<String>() {
@@ -88,23 +119,13 @@ public class MainController extends AbstractController implements Initializable 
         EmailFolderBean<String> root = new EmailFolderBean<>("");
         emailFoldersTreeView.setRoot(root);
         emailFoldersTreeView.setShowRoot(false);
+        CreateAndRegisterEmailAccountService newAccount = new CreateAndRegisterEmailAccountService("micgebak@gmail.com",
+                "Test123!",
+                root,
+                getModelAccess());
+        newAccount.start();
 
-        EmailFolderBean<String> gebarowski = new EmailFolderBean<>("michal.gebarowski@gmail.com");
-        root.getChildren().add(gebarowski);
-
-        //folder structure
-        EmailFolderBean<String> Inbox = new EmailFolderBean<>("Inbox", "CompleteInbox");
-        EmailFolderBean<String> Sent = new EmailFolderBean<>("Sent", "CompleteInbox");
-        Sent.getChildren().add(new EmailFolderBean<>("Subfolder", "SubfolderComplete"));
-        Sent.getChildren().add(new EmailFolderBean<>("Subfolder2", "Subfolder2Complete"));
-        EmailFolderBean<String> Spam = new EmailFolderBean<>("Spam", "CompleteInbox");
-
-
-        gebarowski.getChildren().addAll(Inbox, Sent, Spam);
-        Inbox.getData().addAll(SampleData.Inbox);
-        Sent.getData().addAll(SampleData.Sent);
-        Spam.getData().addAll(SampleData.Spam);
-
+        emailTableView.setContextMenu(new ContextMenu(showDetails));
 
         /**
          * triggers actions in tableView based on EmailFolderBean methods
@@ -130,7 +151,11 @@ public class MainController extends AbstractController implements Initializable 
 
             if (email != null) {
                 getModelAccess().setSelectedMessage(email);
-                messageRenderer.getEngine().loadContent(email.getContent());
+                messageRendererService.setMessageToRender(email);
+
+                // The same as in Swing SwingUtilities.invokeLater();
+                // Threads which changes the GUI need to work in JavaFX Application Thread
+                messageRendererService.restart();
 
             }
 
@@ -142,11 +167,11 @@ public class MainController extends AbstractController implements Initializable 
             stage.show();
         });
 
+        downAttachButton.setOnAction(e -> downAttachButtonAction());
 
-        emailTableView.setContextMenu(new ContextMenu(showDetails));
 
-        button2.setOnAction(e -> changeReadAction()
-        );
+
+
     }
 }
 

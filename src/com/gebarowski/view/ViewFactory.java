@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.io.IOException;
 
 public class ViewFactory {
 
+    final Logger logger = LoggerFactory.getLogger(ViewFactory.class);
 
     private ModelAccess modelAccess = new ModelAccess();
     private MainController mainController;
@@ -42,6 +45,7 @@ public class ViewFactory {
             mainController = new MainController(modelAccess);
             mainSceneFlag = true;
             return initializeScene(MAIN_LAYOUT_FXML, mainController);
+
         } else {
             throw new OperationNotSupportedException("Main Class already initialized!");
         }
@@ -66,7 +70,7 @@ public class ViewFactory {
             loader = new FXMLLoader(getClass().getResource(fxmlPath));
             loader.setController(controller);
             parent = loader.load();
-
+            logger.info("Controller: {} fxmlPath: {} have been set", controller.toString(), fxmlPath);
         } catch (Exception e) {
            return null;
         }

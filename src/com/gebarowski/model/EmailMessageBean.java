@@ -2,28 +2,44 @@ package com.gebarowski.model;
 
 import com.gebarowski.model.table.AbstractTableItem;
 import javafx.beans.property.SimpleStringProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EmailMessageBean extends AbstractTableItem {
 
     public static Map<String, Integer> formattedValues = new HashMap<String, Integer>();
-
+    final Logger logger = LoggerFactory.getLogger(EmailMessageBean.class);
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;
     private SimpleStringProperty size;
-    private String content;
+    private Message messageReference;
+    //attachments list
+    private List<MimeBodyPart> attachmentsList = new ArrayList<MimeBodyPart>();
+    private StringBuffer attachemntsNames = new StringBuffer();
 
-
-    public EmailMessageBean(String Subject, String Sender, int size, String Content, boolean isRead) {
+    public EmailMessageBean(String Subject, String Sender, int size, boolean isRead, Message messageReference) {
         super(isRead);
         this.sender = new SimpleStringProperty(Sender);
         this.subject = new SimpleStringProperty(Subject);
         this.size = new SimpleStringProperty(formatSize(size));
-        this.content = Content;
+        this.messageReference = messageReference;
+    }
 
 
+    public List<MimeBodyPart> getAttachmentsList() {
+        return attachmentsList;
+    }
+
+    public String getAttachemntsNames() {
+        return attachemntsNames.toString();
     }
 
     public String getSender() {
@@ -39,11 +55,6 @@ public class EmailMessageBean extends AbstractTableItem {
     public String getSize() {
 
         return size.get();
-    }
-
-    public String getContent() {
-
-        return content;
     }
 
 
@@ -71,13 +82,41 @@ public class EmailMessageBean extends AbstractTableItem {
 
     }
 
+    public Message getMessageReference() {
+        return messageReference;
+    }
+
+    public void addAttachment(MimeBodyPart mimeBodyPart) {
+        attachmentsList.add(mimeBodyPart);
+        try {
+            attachemntsNames.append(mimeBodyPart.getFileName() + "; ");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasAttachments(){
+
+        return attachmentsList.size() > 0;
+    }
+
+    public void clearAttachmentList(){
+        /**
+         *  Clear attachmentList and attachmentNames in order to
+         *  prevent from adding the same files several times once
+         *  email is clicked.
+         */
+        attachmentsList.clear();
+        attachemntsNames.setLength(0);
+    }
+
     @Override
     public String toString() {
         return "EmailMessageBean{" +
-                "sender=" + sender.get() +
-                ", subject=" + subject.get() +
-                ", size=" + size.get() +
-                ", content='" + content + '\'' +
+                "sender=" + sender +
+                ", subject=" + subject +
+                ", size=" + size +
+                ", messageReference=" + messageReference +
                 '}';
     }
 }

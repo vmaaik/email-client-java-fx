@@ -29,7 +29,7 @@ public class EmailContextMenuController extends AbstractController implements In
         EmailMessageBean selectedMessage = getModelAccess().getSelectedMessage();
         subjectLabel.setText("Subject: " + selectedMessage.getSubject());
         senderLabel.setText("Sender: " + selectedMessage.getSender());
-        menuMessageWebView.getEngine().loadContent(selectedMessage.getContent());
+        //menuMessageWebView.getEngine().loadContent(selectedMessage.getContent());
 
 
     }
