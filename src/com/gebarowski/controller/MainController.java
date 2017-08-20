@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class MainController extends AbstractController implements Initializable {
@@ -35,6 +36,8 @@ public class MainController extends AbstractController implements Initializable 
     private TableColumn<EmailMessageBean, String> senderCol;
     @FXML
     private TableColumn<EmailMessageBean, String> sizeCol;
+    @FXML
+    private TableColumn<EmailMessageBean, Date> dateCol;
     @FXML
     private WebView messageRenderer;
     @FXML
@@ -54,13 +57,12 @@ public class MainController extends AbstractController implements Initializable 
     }
 
     @FXML
-    void setNewMessageBtnAction(ActionEvent event){
+    void setNewMessageBtnAction(ActionEvent event) {
         Scene scene = ViewFactory.defaultViewFactory.getComposeMessageScene();
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
     }
-
 
 
     @FXML
@@ -81,7 +83,7 @@ public class MainController extends AbstractController implements Initializable 
         downAttachProgressBar.setVisible(false);
 
         downAttachLabel.setVisible(false);
-        saveAttachmentService = new SaveAttachmentService( downAttachProgressBar, downAttachLabel);
+        saveAttachmentService = new SaveAttachmentService(downAttachProgressBar, downAttachLabel);
         downAttachProgressBar.progressProperty().bind(saveAttachmentService.progressProperty());
         messageRendererService = new MessageRendererService(messageRenderer.getEngine());
 
@@ -94,6 +96,7 @@ public class MainController extends AbstractController implements Initializable 
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
         sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("size"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, Date>("date"));
 
         sizeCol.setComparator(new Comparator<String>() {
             Integer int1, int2;
@@ -164,8 +167,6 @@ public class MainController extends AbstractController implements Initializable 
 
 
 //        downAttachButton.setOnAction(e -> downAttachButtonAction());
-
-
 
 
     }
