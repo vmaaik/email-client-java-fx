@@ -12,6 +12,11 @@ public class EmailAccountBean {
     final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class.getName());
 
     private String emailAddress;
+
+    public String getPassword() {
+        return password;
+    }
+
     private String password;
     private Properties properties;
 
