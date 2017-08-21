@@ -7,6 +7,7 @@ import com.gebarowski.controller.services.SaveAttachmentService;
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.folder.EmailFolderBean;
 import com.gebarowski.model.table.BoldRowFactory;
+import com.gebarowski.model.table.FormatableInteger;
 import com.gebarowski.view.ViewFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +36,7 @@ public class MainController extends AbstractController implements Initializable 
     @FXML
     private TableColumn<EmailMessageBean, String> senderCol;
     @FXML
-    private TableColumn<EmailMessageBean, String> sizeCol;
+    private TableColumn<EmailMessageBean, FormatableInteger> sizeCol;
     @FXML
     private TableColumn<EmailMessageBean, Date> dateCol;
     @FXML
@@ -95,23 +96,9 @@ public class MainController extends AbstractController implements Initializable 
         ViewFactory viewFactory = ViewFactory.defaultViewFactory;
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("subject"));
         senderCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("sender"));
-        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, String>("size"));
+        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, FormatableInteger>("size"));
         dateCol.setCellValueFactory(new PropertyValueFactory<EmailMessageBean, Date>("date"));
-
-        sizeCol.setComparator(new Comparator<String>() {
-            Integer int1, int2;
-
-            @Override
-            /**
-             * Standard comparator is overridden in order to handle String size
-             * format which is expressed in B,KB,MB
-             */
-            public int compare(String o1, String o2) {
-                int1 = EmailMessageBean.formattedValues.get(o1);
-                int2 = EmailMessageBean.formattedValues.get(o2);
-                return int1.compareTo(int2);
-            }
-        });
+        sizeCol.setComparator(new FormatableInteger(0));
 
 
         EmailFolderBean<String> root = new EmailFolderBean<>("");
