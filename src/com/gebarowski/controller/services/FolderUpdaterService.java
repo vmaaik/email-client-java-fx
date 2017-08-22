@@ -3,8 +3,8 @@ package com.gebarowski.controller.services;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.Folder;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class FolderUpdaterService extends Service<Void> {
 
-    final Logger logger = LoggerFactory.getLogger(FolderUpdaterService.class);
+//    final Logger logger = LoggerFactory.getLogger(FolderUpdaterService.class);
     private List<Folder> folderList;
 
     public FolderUpdaterService(List<Folder> folderList) {

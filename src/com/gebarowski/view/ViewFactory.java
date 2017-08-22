@@ -7,14 +7,14 @@ import com.gebarowski.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.naming.OperationNotSupportedException;
 
 
 public class ViewFactory {
-    final Logger logger = LoggerFactory.getLogger(ViewFactory.class);
+//    final Logger logger = LoggerFactory.getLogger(ViewFactory.class);
     // one instance for all controllers
     public static ViewFactory defaultViewFactory = new ViewFactory();
     private static boolean mainSceneFlag = false;
@@ -53,7 +53,7 @@ public class ViewFactory {
 
     public Scene getComposeMessageScene() {
         AbstractController composeMessageController = new ComposeMessageController(modelAccess);
-        logger.info("Attempting to initialize MessageScene...");
+//        logger.info("Attempting to initialize MessageScene...");
         return initializeScene(COMPOSE_MESSAGE_CONTROLLER, composeMessageController);
 
 
@@ -73,7 +73,7 @@ public class ViewFactory {
             loader = new FXMLLoader(getClass().getResource(fxmlPath));
             loader.setController(controller);
             parent = loader.load();
-            logger.info("Controller: {} fxmlPath: {} have been set", controller.toString(), fxmlPath);
+//            logger.info("Controller: {} fxmlPath: {} have been set", controller.toString(), fxmlPath);
         } catch (Exception e) {
             return null;
         }

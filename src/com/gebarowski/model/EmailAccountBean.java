@@ -1,15 +1,15 @@
 package com.gebarowski.model;
 
-import javafx.collections.ObservableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import javafx.collections.ObservableList;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import java.util.Properties;
 
 public class EmailAccountBean {
 
-    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class.getName());
+//    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class.getName());
 
     private String emailAddress;
 
@@ -47,18 +47,18 @@ public class EmailAccountBean {
 
         // Connecting with imap
         session = Session.getInstance(properties, auth);
-        logger.info("Session created");
+//        logger.info("Session created");
         try {
             //get info from the session
             this.store = session.getStore();
             store.connect(properties.getProperty("incomingHost"), emailAddress, password);
-            logger.info("Email account {}. has been successfully connected with {}.", emailAddress, properties.getProperty("incomingHost"));
+//            logger.info("Email account {}. has been successfully connected with {}.", emailAddress, properties.getProperty("incomingHost"));
             loginState = EmailConstants.LOGIN_STATE_SUCCEDED;
 
         } catch (Exception e) {
             e.printStackTrace();
             loginState = EmailConstants.LOGIN_STATE_FAILED_BY_CREDENTIALS;
-            logger.error(" Connection {}. with {}. FAILED ", emailAddress, properties.getProperty("incomingHost"));
+//            logger.error(" Connection {}. with {}. FAILED ", emailAddress, properties.getProperty("incomingHost"));
         }
     }
 

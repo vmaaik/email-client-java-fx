@@ -4,8 +4,8 @@ import com.gebarowski.model.EmailMessageBean;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.Flags;
 import javax.mail.Message;
@@ -17,7 +17,7 @@ import javax.mail.MessagingException;
  */
 public class EmailFolderBean<T> extends TreeItem<String> {
 
-    final Logger logger = LoggerFactory.getLogger(EmailFolderBean.class);
+//    final Logger logger = LoggerFactory.getLogger(EmailFolderBean.class);
 
     // indicates email folder top element
     private boolean topElement = false;
@@ -42,7 +42,7 @@ public class EmailFolderBean<T> extends TreeItem<String> {
         this.data = null;
         this.topElement = true;
         this.setExpanded(true);
-        logger.info("Root folder: {} has been created", value);
+//        logger.info("Root folder: {} has been created", value);
     }
 
     /**

@@ -5,8 +5,8 @@ import com.gebarowski.model.EmailAccountBean;
 import com.gebarowski.model.folder.EmailFolderBean;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -22,7 +22,7 @@ public class FetchFoldersService extends Service<Void> {
      * FetchUpdaterService that all folders have been already fetched and updater can start its work.
      */
     private static int NUMBER_OF_FETCHFOLDERSSERVICES_ACTIVE = 0;
-    final Logger logger = LoggerFactory.getLogger(FetchFoldersService.class);
+//    final Logger logger = LoggerFactory.getLogger(FetchFoldersService.class);
     private EmailFolderBean<String> foldersRoot;
     private EmailAccountBean emailAccountBean;
     private ModelAccess modelAccess;
@@ -62,7 +62,7 @@ public class FetchFoldersService extends Service<Void> {
                         foldersRoot.getChildren().add(item);
                         item.setExpanded(true);
                         addMessageListenerToFolder(folder, item);
-                        logger.info("Folder: {} has been added to the tree view", folder.getName());
+//                        logger.info("Folder: {} has been added to the tree view", folder.getName());
                         FetchMessagesService fetchMessagesService = new FetchMessagesService(item, folder);
                         fetchMessagesService.start();
                         Folder[] subFolders = folder.list();
@@ -71,7 +71,7 @@ public class FetchFoldersService extends Service<Void> {
                             EmailFolderBean<String> subitem = new EmailFolderBean<String>(subFolder.getName(), subFolder.getFullName());
                             item.getChildren().add(subitem);
                             addMessageListenerToFolder(subFolder, subitem);
-                            logger.info("Subfolder: {} has been added to the tree view. Full name: {}.", subFolder.getName(), subFolder.getFullName());
+//                            logger.info("Subfolder: {} has been added to the tree view. Full name: {}.", subFolder.getName(), subFolder.getFullName());
                             FetchMessagesService fetchMessagesSubfolderService = new FetchMessagesService(item, subFolder);
                             fetchMessagesSubfolderService.start();
                         }
