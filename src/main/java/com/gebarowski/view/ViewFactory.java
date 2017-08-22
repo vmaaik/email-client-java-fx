@@ -19,10 +19,10 @@ public class ViewFactory {
     public static ViewFactory defaultViewFactory = new ViewFactory();
     private static boolean mainSceneFlag = false;
 
-    private final String DEFAULT_CSS = "style.css";
-    private final String EMAIL_CONTEXT_MENU_FXML = "EmailContextMenuLayout.fxml";
-    private final String MAIN_LAYOUT_FXML = "MainLayout.fxml";
-    private final String COMPOSE_MESSAGE_CONTROLLER = "ComposeMessageLayout.fxml";
+    private final String DEFAULT_CSS = "/style.css";
+    private final String EMAIL_CONTEXT_MENU_FXML = "/fxml/EmailContextMenuLayout.fxml";
+    private final String MAIN_LAYOUT_FXML = "/fxml/MainLayout.fxml";
+    private final String COMPOSE_MESSAGE_CONTROLLER = "/fxml/ComposeMessageLayout.fxml";
 
     private ModelAccess modelAccess = new ModelAccess();
 

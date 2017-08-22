@@ -19,7 +19,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.ResourceBundle;
 

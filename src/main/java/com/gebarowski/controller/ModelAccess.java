@@ -3,7 +3,6 @@ package com.gebarowski.controller;
 import com.gebarowski.model.EmailAccountBean;
 import com.gebarowski.model.EmailMessageBean;
 import com.gebarowski.model.folder.EmailFolderBean;
-import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
