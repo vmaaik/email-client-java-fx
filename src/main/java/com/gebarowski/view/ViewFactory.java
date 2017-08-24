@@ -7,22 +7,23 @@ import com.gebarowski.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import javax.naming.OperationNotSupportedException;
 
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
 
 public class ViewFactory {
-//    final Logger logger = LoggerFactory.getLogger(ViewFactory.class);
+    //    final Logger logger = LoggerFactory.getLogger(ViewFactory.class);
     // one instance for all controllers
     public static ViewFactory defaultViewFactory = new ViewFactory();
     private static boolean mainSceneFlag = false;
 
-    private final String DEFAULT_CSS = "/style.css";
-    private final String EMAIL_CONTEXT_MENU_FXML = "/fxml/EmailContextMenuLayout.fxml";
-    private final String MAIN_LAYOUT_FXML = "/fxml/MainLayout.fxml";
-    private final String COMPOSE_MESSAGE_CONTROLLER = "/fxml/ComposeMessageLayout.fxml";
+    private final String DEFAULT_CSS = "/css/style.css";
+    private final String EMAIL_CONTEXT_MENU_FXML = "fxml/EmailContextMenuLayout.fxml";
+    private final String MAIN_LAYOUT_FXML = "fxml/Main_Layout.fxml";
+    private final String COMPOSE_MESSAGE_CONTROLLER = "fxml/ComposeMessageLayout.fxml";
 
     private ModelAccess modelAccess = new ModelAccess();
 
@@ -57,9 +58,7 @@ public class ViewFactory {
         return initializeScene(COMPOSE_MESSAGE_CONTROLLER, composeMessageController);
 
 
-
     }
-
 
     private Scene initializeScene(String fxmlPath, AbstractController controller) {
         /**
@@ -70,17 +69,18 @@ public class ViewFactory {
         Scene scene;
 
         try {
-            loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            loader = new FXMLLoader();
+            loader.setLocation(ViewFactory.class.getClassLoader().getResource(fxmlPath));
             loader.setController(controller);
             parent = loader.load();
-//            logger.info("Controller: {} fxmlPath: {} have been set", controller.toString(), fxmlPath);
+
         } catch (Exception e) {
+            e.printStackTrace();
+
             return null;
         }
         scene = new Scene(parent);
         scene.getStylesheets().add(getClass().getResource(DEFAULT_CSS).toExternalForm());
         return scene;
     }
-
-
 }
