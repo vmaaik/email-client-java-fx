@@ -1,15 +1,15 @@
 package com.gebarowski.model;
 
-//import javafx.collections.ObservableList;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import java.util.Properties;
 
 public class EmailAccountBean {
 
-//    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class.getName());
+    final Logger logger = LoggerFactory.getLogger(EmailAccountBean.class.getName());
 
     private String emailAddress;
 
@@ -47,7 +47,7 @@ public class EmailAccountBean {
 
         // Connecting with imap
         session = Session.getInstance(properties, auth);
-//        logger.info("Session created");
+        logger.info("Session created");
         try {
             //get info from the session
             this.store = session.getStore();

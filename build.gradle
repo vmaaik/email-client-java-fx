@@ -1,28 +1,29 @@
-group 'com.gebarowski'
-version '1.0.0-SNAPSHOT'
-
 apply plugin: 'java'
 apply plugin: 'idea'
 
+group 'com.gebarowski'
+archivesBaseName = "email-client"
+version = "1.0.0-PRE_ALFA"
+
+
 jar {
-    manifest{
+    manifest {
         attributes 'Main-Class': 'com.gebarowski.App'
     }
     //fat jar
-    from{
+    from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
 repositories {
     mavenCentral()
-
 }
 
 dependencies {
+
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.0'
     compile group: 'javax.activation', name: 'activation', version: '1.1'
-
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-alpha2'
 }
-
 
