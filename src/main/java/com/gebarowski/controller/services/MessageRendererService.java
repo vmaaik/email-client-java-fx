@@ -4,8 +4,8 @@ import com.gebarowski.model.EmailMessageBean;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.web.WebEngine;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -13,7 +13,7 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 
 public class MessageRendererService extends Service<Void> {
-    private static final Logger logger = LoggerFactory.getLogger(MessageRendererService.class.getName());
+//    private static final Logger logger = LoggerFactory.getLogger(MessageRendererService.class.getName());
 
     private EmailMessageBean messageToRender;
     private WebEngine messageRendererEngine;
@@ -46,7 +46,7 @@ public class MessageRendererService extends Service<Void> {
         stringBuffer.setLength(0);
         messageToRender.clearAttachmentList();
         Message message = messageToRender.getMessageReference();
-        logger.info("Attempting to render message {}", messageToRender.toString());
+//        logger.info("Attempting to render message {}", messageToRender.toString());
         try {
 
             //check if the content is plain text or HTML
@@ -55,11 +55,11 @@ public class MessageRendererService extends Service<Void> {
                     messageType.contains(("TEXT/PLAIN")) ||
                     messageType.contains("text")) {
                 stringBuffer.append(message.getContent().toString());
-                logger.info("Message has been rendered. No multipart, no attachments.  TYPE {}", messageType);
+//                logger.info("Message has been rendered. No multipart, no attachments.  TYPE {}", messageType);
 
                 //check if the content is a nested message
             } else if (messageType.contains("multipart")) {
-                logger.info("Attepmting to render message which contains MULTIPART");
+//                logger.info("Attepmting to render message which contains MULTIPART");
                 Multipart multipart = (Multipart) message.getContent();
                 for (int i = multipart.getCount() - 1; i >= 0; i--) {
                     BodyPart bodyPart = multipart.getBodyPart(i);
@@ -72,7 +72,7 @@ public class MessageRendererService extends Service<Void> {
                             contentType.contains("text")) {
                         if (stringBuffer.length() == 0) {
                             stringBuffer.append(bodyPart.getContent().toString());
-                            logger.info("Message has been rendered. Multipart TYPE {}", contentType);
+//                            logger.info("Message has been rendered. Multipart TYPE {}", contentType);
                         }
                         /** Check if the content has attachment
                          *  MIME It is not a mail transfer protocol.
@@ -82,22 +82,22 @@ public class MessageRendererService extends Service<Void> {
                     }else if(contentType.toLowerCase().contains("application") ||
                             contentType.toLowerCase().contains("image") ||
                             contentType.toLowerCase().contains("audio")){
-                        logger.info("Attepmting to render message which contains attachments");
+//                        logger.info("Attepmting to render message which contains attachments");
                         MimeBodyPart mimeBodyPart = (MimeBodyPart) bodyPart;
                         messageToRender.addAttachment(mimeBodyPart);
 
 
 
-                        logger.info("Attachment {} has been added to the attachment list.", mimeBodyPart.getFileName());
+//                        logger.info("Attachment {} has been added to the attachment list.", mimeBodyPart.getFileName());
                     } else if (bodyPart.getContentType().contains("multipart")) {
-                        logger.info("Attepmting to render nested message which contains MULTIPARTS");
+//                        logger.info("Attepmting to render nested message which contains MULTIPARTS");
                         Multipart multipart1 = (Multipart) bodyPart.getContent();
                         for (int j = multipart1.getCount() - 1; j >= 0; j--) {
                             BodyPart bodyPart1 = multipart1.getBodyPart(j);
                             if ((bodyPart1.getContentType()).contains("TEXT/HTML") ||
                                     bodyPart1.getContentType().contains("TEXT/PLAIN")) {
                                 stringBuffer.append(bodyPart1.getContent().toString());
-                                logger.info("Message has been rendered. Nested multipart TYPE {}", bodyPart1.getContentType());
+//                                logger.info("Message has been rendered. Nested multipart TYPE {}", bodyPart1.getContentType());
                             }
                         }
                     }
@@ -108,7 +108,7 @@ public class MessageRendererService extends Service<Void> {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info("Rendering message {} FAILED", messageToRender.toString());
+//            logger.info("Rendering message {} FAILED", messageToRender.toString());
         }
     }
 
@@ -121,7 +121,7 @@ public class MessageRendererService extends Service<Void> {
      */
     private void showMessage() {
         messageRendererEngine.loadContent(stringBuffer.toString());
-        logger.info("Message has been shown in WebView");
+//        logger.info("Message has been shown in WebView");
 
     }
 

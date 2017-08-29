@@ -1,6 +1,6 @@
 package com.gebarowski.model;
 
-import javafx.collections.ObservableList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,13 +52,13 @@ public class EmailAccountBean {
             //get info from the session
             this.store = session.getStore();
             store.connect(properties.getProperty("incomingHost"), emailAddress, password);
-            logger.info("Email account {}. has been successfully connected with {}.", emailAddress, properties.getProperty("incomingHost"));
+//            logger.info("Email account {}. has been successfully connected with {}.", emailAddress, properties.getProperty("incomingHost"));
             loginState = EmailConstants.LOGIN_STATE_SUCCEDED;
 
         } catch (Exception e) {
             e.printStackTrace();
             loginState = EmailConstants.LOGIN_STATE_FAILED_BY_CREDENTIALS;
-            logger.error(" Connection {}. with {}. FAILED ", emailAddress, properties.getProperty("incomingHost"));
+//            logger.error(" Connection {}. with {}. FAILED ", emailAddress, properties.getProperty("incomingHost"));
         }
     }
 

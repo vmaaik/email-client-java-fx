@@ -5,8 +5,8 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class SaveAttachmentService extends Service<Void> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SaveAttachmentService.class);
+//    private static final Logger logger = LoggerFactory.getLogger(SaveAttachmentService.class);
     private String LOCATION_OF_DOWNLOADS = System.getProperty("user.home") + "/Downloads/";
 
     private EmailMessageBean messageToDownload;
@@ -31,7 +31,7 @@ public class SaveAttachmentService extends Service<Void> {
         this.setOnSucceeded(e -> {
             showDownloadProgress(false);
         });
-        logger.info("SaveAttachmentService has been created." );
+//        logger.info("SaveAttachmentService has been created." );
     }
 
     @Override
@@ -44,8 +44,8 @@ public class SaveAttachmentService extends Service<Void> {
                     for (MimeBodyPart mimeBodyPart : messageToDownload.getAttachmentsList()) {
                         updateProgress(messageToDownload.getAttachmentsList().indexOf(mimeBodyPart),messageToDownload.getAttachmentsList().size() );
                         mimeBodyPart.saveFile(LOCATION_OF_DOWNLOADS + mimeBodyPart.getFileName());
-                        logger.info("File {} has been saved", mimeBodyPart.getFileName());
-                        logger.info("LOCATION {}", LOCATION_OF_DOWNLOADS);
+//                        logger.info("File {} has been saved", mimeBodyPart.getFileName());
+//                        logger.info("LOCATION {}", LOCATION_OF_DOWNLOADS);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

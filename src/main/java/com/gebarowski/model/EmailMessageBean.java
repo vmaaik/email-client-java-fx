@@ -4,8 +4,8 @@ import com.gebarowski.model.table.AbstractTableItem;
 import com.gebarowski.model.table.FormatableInteger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class EmailMessageBean extends AbstractTableItem {
 
-    final Logger logger = LoggerFactory.getLogger(EmailMessageBean.class);
+//    final Logger logger = LoggerFactory.getLogger(EmailMessageBean.class);
     private SimpleStringProperty sender;
     private SimpleStringProperty subject;
     private SimpleObjectProperty<FormatableInteger> size;
